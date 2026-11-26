@@ -1,6 +1,7 @@
 import { ArrowUpRight, Clock3, MapPin, SlidersHorizontal } from 'lucide-react'
 import { useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
+import { preload } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { BeanMark } from '../components/Brand'
 import { ResponsiveImage } from '../components/ResponsiveImage'
@@ -11,6 +12,7 @@ import { shopImages } from '../features/catalog/shopImages'
 import { shops } from '../features/catalog/shops.js'
 import { formatPrice } from '../features/cart/cart.js'
 import { rewards } from '../lib/rewards.js'
+import { responsiveSrcSet } from '../lib/responsiveImage.js'
 import { baristaImages, heroImages } from './homeMedia'
 import './home.css'
 
@@ -20,7 +22,12 @@ const preorderSteps = [
   { Icon: Clock3, title: 'Забери у зручний час', description: 'Оплати замовлення під час отримання.' },
 ]
 
-const featuredProducts = ['flat-white', 'iced-latte', 'matcha-latte', 'croissant'].map(getProduct)
+const featuredIds = ['flat-white', 'iced-latte', 'matcha-latte', 'croissant']
+const heroSizes = '(min-width: 1792px) 960px, (min-width: 760px) 53.25vw, 100vw'
+
+preload(heroImages[0], {
+  as: 'image', fetchPriority: 'high', imageSizes: heroSizes, imageSrcSet: responsiveSrcSet(heroImages),
+})
 
 function Hero() {
   const reduceMotion = useReducedMotion()
@@ -43,7 +50,7 @@ function Hero() {
       <div className="hero-media">
         <ResponsiveImage
           sources={heroImages}
-          sizes="(min-width: 1792px) 960px, (min-width: 760px) 53.25vw, 100vw"
+          sizes={heroSizes}
           alt="Синій стакан BLACK BEAN і круасан на столі у сонячній кав’ярні"
           landscape
           priority
@@ -60,7 +67,7 @@ function FeaturedMenu() {
         <h2 id="featured-heading">Популярні пропозиції</h2>
       </div>
       <ul className="product-list">
-        {featuredProducts.map((product) => (
+        {featuredIds.map(getProduct).filter(Boolean).map((product) => (
           <li key={product.id} className="product">
             <Link className="featured-link" to={`/menu?product=${product.id}`} aria-labelledby={`featured-${product.id}`}>
               <div className="image-frame product-image">
@@ -169,7 +176,7 @@ function Loyalty() {
         <div className="loyalty-copy">
           <p className="eyebrow">Бонусна програма</p>
           <h2 id="loyalty-heading">Бонуси за каву.</h2>
-          <p>Цифрова картка з’явиться в особистому кабінеті.</p>
+          <p>Перевіряйте баланс та історію бонусів в особистому кабінеті.</p>
         </div>
         <div className="loyalty-card" aria-hidden="true">
           <span className="loyalty-card-brand">BLACK<br />BEAN</span>
@@ -186,7 +193,7 @@ function Loyalty() {
   )
 }
 
-export default function HomePage() {
+export function Component() {
   return (
     <>
       <Hero />

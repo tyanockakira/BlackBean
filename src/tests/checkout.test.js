@@ -4,7 +4,7 @@ import { getProduct } from '../features/catalog/catalog.js'
 import { getShop } from '../features/catalog/shops.js'
 import { defaultLine } from '../features/cart/cart.js'
 import { normalizePhone, orderLimits, prepareOrder } from '../features/checkout/order.js'
-import { pickupOptions } from '../features/checkout/pickup.js'
+import { pickupDateKeys, pickupOptions } from '../features/checkout/pickup.js'
 
 const now = new Date('2026-11-26T12:00:00Z')
 const podil = getShop('podil')
@@ -73,5 +73,37 @@ test('accepts a listed slot and rejects passed, non-grid and other-day selection
   assert.equal(prepareOrder(timedDraft, now).payload.pickup.at, selected.at)
   assert.ok(prepareOrder(timedDraft, new Date('2026-11-26T12:01:00Z')).errors.pickup)
   assert.ok(prepareOrder({ ...timedDraft, pickupAt: '2026-11-26T12:19:00Z' }, now).errors.pickup)
-  assert.ok(prepareOrder({ ...timedDraft, pickupAt: '2026-11-27T12:15:00Z' }, now).errors.pickup)
+  assert.ok(prepareOrder({ ...timedDraft, pickupAt: '2026-11-28T12:15:00Z' }, now).errors.pickup)
+})
+
+test('offers tomorrow when today is closed and keeps the selected Kyiv date', () => {
+  const closed = new Date('2026-11-26T18:00:00Z')
+  const { today, tomorrow } = pickupDateKeys(closed)
+  assert.equal(pickupOptions(podil, closed, today).status, 'closed')
+  const nextDay = pickupOptions(podil, closed, tomorrow)
+  assert.equal(nextDay.slots[0].label, '08:15')
+  assert.equal(nextDay.slots.at(-1).label, '19:45')
+  assert.match(nextDay.slots[0].at, /^2026-11-27T06:15:00/)
+})
+
+test('rejects dates beyond tomorrow and supports an overnight schedule across midnight', () => {
+  const now = new Date('2026-11-26T12:00:00Z')
+  const overnight = { ...podil, hours: { opens: 1380, closes: 60 } }
+  const tomorrow = pickupDateKeys(now).tomorrow
+  assert.equal(pickupOptions(overnight, now, tomorrow).status, 'open')
+  assert.ok(pickupOptions(overnight, now, tomorrow).slots.some((slot) => slot.label === '00:15'))
+  assert.equal(pickupOptions(podil, now, '2026-11-28').status, 'invalid-date')
+})
+
+test('anchors slots to an edited opening time and handles both sides of midnight', () => {
+  const shop = { ...podil, hours: { opens: 23 * 60 + 7, closes: 62 } }
+  const beforeMidnight = new Date('2026-11-26T21:12:00Z')
+  const slots = pickupOptions(shop, beforeMidnight)
+  assert.deepEqual(slots.slots.map(({ label }) => label), ['23:37', '23:52'])
+  const tomorrow = pickupDateKeys(beforeMidnight).tomorrow
+  assert.deepEqual(pickupOptions(shop, beforeMidnight, tomorrow).slots.slice(0, 3).map(({ label }) => label),
+    ['00:07', '00:22', '00:37'])
+  const afterMidnight = new Date('2026-11-26T22:05:00Z')
+  assert.equal(pickupOptions(shop, afterMidnight).asap.label, '00:20')
+  assert.equal(pickupOptions(shop, afterMidnight).slots[0].label, '00:22')
 })

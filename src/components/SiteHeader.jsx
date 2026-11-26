@@ -122,9 +122,9 @@ export function SiteHeader() {
             <MapPin size={21} aria-hidden="true" />
             <span>{shop.name}</span>
           </button>
-          <button className="icon-control" type="button" disabled aria-label="Особистий кабінет — у розробці" title="Особистий кабінет — у розробці">
+          <NavLink className="icon-control header-account" to="/account" aria-label="Особистий кабінет">
             <UserRound size={21} aria-hidden="true" />
-          </button>
+          </NavLink>
           <button className="icon-control header-cart" type="button" onClick={() => showPanel('cart')} aria-haspopup="dialog"
             aria-label={count ? `Кошик, товарів: ${count}` : 'Кошик, порожній'}>
             <ShoppingBag size={21} aria-hidden="true" />

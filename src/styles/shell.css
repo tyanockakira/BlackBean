@@ -153,3 +153,4 @@
   .icon-control:not(:disabled):hover { color: var(--cobalt); background: var(--white); }
   .site-footer nav a:hover { text-decoration: underline; text-underline-offset: 0.23em; }
 }
+.header-account[aria-current="page"] { color: var(--cobalt); }

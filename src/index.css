@@ -120,3 +120,4 @@ ul, ol { list-style: none; }
     transition-duration: 0.01ms !important;
   }
 }
+ .catalog-connection-error { padding: 10px 20px; color: #fff; background: #9b322d; text-align: center; font-size: 0.875rem; font-weight: 700; }

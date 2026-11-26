@@ -9,9 +9,9 @@ export function BeanMark({ className }) {
   )
 }
 
-export function Brand({ className = '' }) {
+export function Brand({ className = '', reloadDocument }) {
   return (
-    <Link className={`brand ${className}`} to="/" aria-label="BLACK BEAN — на головну">
+    <Link className={`brand ${className}`} to="/" reloadDocument={reloadDocument} aria-label="BLACK BEAN — на головну">
       <BeanMark className="brand-mark" />
       <span>BLACK<span className="brand-bean">BEAN</span></span>
     </Link>

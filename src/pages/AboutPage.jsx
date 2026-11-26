@@ -71,7 +71,7 @@ export function Component() {
           <dl className="about-rewards-rules">
             {rewards.map(({ value, detail }) => <div key={value}><dt>{value}</dt><dd>{detail}</dd></div>)}
           </dl>
-          <p>Цифрова картка з’явиться в особистому кабінеті.</p>
+          <p>Баланс та історія бонусів доступні в особистому кабінеті.</p>
         </Reveal>
       </div>
       <div className="container about-end">

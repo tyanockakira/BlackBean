@@ -1,6 +1,6 @@
 import { getProduct } from './catalog.js'
 
-export const shops = [
+export let shops = [
   {
     id: 'podil',
     name: 'Поділ',
@@ -33,7 +33,7 @@ export const shops = [
   },
 ]
 
-const unavailableByShop = {
+let unavailableByShop = {
   podil: [],
   center: ['flat-white', 'basque-cheesecake'],
   pechersk: ['iced-latte', 'matcha-latte', 'almond-croissant'],
@@ -45,4 +45,12 @@ export function getShop(id) {
 
 export function isAvailable(productId, shopId) {
   return Boolean(getProduct(productId) && getShop(shopId) && !unavailableByShop[shopId].includes(productId))
+}
+
+export function applyShops(nextShops, availability) {
+  shops = nextShops
+  unavailableByShop = Object.fromEntries(nextShops.map((shop) => [
+    shop.id,
+    availability.filter((item) => item.shop_id === shop.id && !item.available).map((item) => item.product_id),
+  ]))
 }

@@ -1,11 +1,11 @@
-const widths = [480, 768, 1200]
+import { responsiveSrcSet } from '../lib/responsiveImage.js'
 
 export function ResponsiveImage({ sources, sizes, alt, landscape = false, priority = false, eager = false, className }) {
   return (
     <img
       className={className}
       src={sources[0]}
-      srcSet={sources.map((url, index) => `${url} ${widths[index]}w`).join(', ')}
+      srcSet={responsiveSrcSet(sources)}
       sizes={sizes}
       width={480}
       height={landscape ? 320 : 480}

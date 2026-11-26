@@ -5,7 +5,7 @@ export const categories = [
   { id: 'desserts', name: 'Десерти' },
 ]
 
-export const modifierGroups = {
+export let modifierGroups = {
   milk: {
     name: 'Молоко',
     defaultLabel: 'Коров’яче',
@@ -40,7 +40,7 @@ function volumes(standard, large) {
 const serving = [{ id: 'standard', name: '', price: 0 }]
 const milkCoffee = ['milk', 'syrup', 'espresso']
 
-export const products = [
+export let products = [
   { id: 'espresso', category: 'coffee', name: 'Еспресо', description: 'Міцна кава з насиченим смаком і коротким післясмаком.', price: 7000, variants: volumes(30, 60), groups: [] },
   { id: 'americano', category: 'coffee', name: 'Американо', description: 'Еспресо з гарячою водою та м’якшим смаком.', price: 8000, variants: volumes(180, 250), groups: ['syrup', 'espresso'] },
   { id: 'cappuccino', category: 'coffee', name: 'Капучино', description: 'Еспресо з молоком і густою мікропіною.', price: 10000, variants: volumes(180, 250), groups: milkCoffee },
@@ -55,7 +55,13 @@ export const products = [
   { id: 'brownie', category: 'desserts', name: 'Шоколадний брауні', description: 'Щільний десерт із темним шоколадом.', price: 11500, variants: serving, groups: [] },
 ]
 
-const byId = new Map(products.map((product) => [product.id, product]))
+let byId = new Map(products.map((product) => [product.id, product]))
+
+export function applyCatalog(nextProducts, nextModifierGroups) {
+  products = nextProducts
+  modifierGroups = nextModifierGroups
+  byId = new Map(products.map((product) => [product.id, product]))
+}
 
 export function getProduct(id) {
   return byId.get(id)

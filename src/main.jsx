@@ -2,10 +2,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
+import './styles/fonts.css'
 import './styles/shell.css'
-import App from './App.jsx'
-import { CartProvider } from './features/cart/CartContext.jsx'
-import HomePage from './pages/HomePage.jsx'
 import { RouteError } from './pages/RouteError.jsx'
 import { navigation } from './lib/navigation.js'
 
@@ -27,15 +25,33 @@ function lazyRoute(page, lazy) {
 
 const router = createBrowserRouter([
   {
-    element: <CartProvider><App /></CartProvider>,
+    path: '/admin',
+    lazy: () => import('./pages/AdminPage.jsx'),
+    errorElement: <RouteError />,
+    hydrateFallbackElement: <></>,
+  },
+  {
+    lazy: () => import('./App.jsx'),
+    async loader({ request }) {
+      try {
+        const { loadCatalog } = await import('./features/catalog/catalogApi.js')
+        await loadCatalog(request.signal)
+        return { catalogUnavailable: false }
+      } catch {
+        return { catalogUnavailable: true }
+      }
+    },
+    shouldRevalidate: () => false,
     errorElement: <RouteError />,
     hydrateFallbackElement: <></>,
     children: [
-      { index: true, element: <HomePage />, handle: pageMetadata(home) },
+      { index: true, lazy: () => import('./pages/HomePage.jsx'), handle: pageMetadata(home) },
       lazyRoute(menu, () => import('./pages/MenuPage.jsx')),
       lazyRoute(locations, () => import('./pages/LocationsPage.jsx')),
       lazyRoute(about, () => import('./pages/AboutPage.jsx')),
       lazyRoute(checkout, () => import('./pages/CheckoutPage.jsx')),
+      lazyRoute({ to: '/account', label: 'Особистий кабінет', description: 'Ваш профіль, замовлення та бонуси BLACK BEAN.' },
+        () => import('./pages/AccountPage.jsx')),
       lazyRoute({ ...notFound, to: '*' }, async () => {
         const { default: PlaceholderPage } = await import('./pages/PlaceholderPage.jsx')
         return { element: <PlaceholderPage title={notFound.label} /> }

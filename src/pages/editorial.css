@@ -1,0 +1,65 @@
+.editorial-heading h1 { font-size: clamp(3.45rem, 8.1vw, 8rem); }
+.editorial-heading h1 span { color: var(--cobalt); }
+.editorial-heading > p:not(.eyebrow), .locations-intro > div > p:first-child { color: var(--muted); font-size: clamp(1rem, 1.7vw, 1.25rem); }
+
+.locations-page { padding-block: clamp(32px, 5vw, 76px) clamp(56px, 7vw, 112px); }
+.locations-intro { display: grid; gap: 18px; padding-bottom: clamp(24px, 3.2vw, 48px); border-bottom: var(--border); }
+.locations-intro h1 { font-size: clamp(3.2rem, 7.3vw, 7.3rem); line-height: 1.04; }
+.locations-intro > div { max-width: 33ch; }
+.locations-demo { margin-top: 8px; color: var(--muted); font-size: 0.875rem; }
+.location-story { display: grid; align-items: center; gap: 18px clamp(24px, 5vw, 86px); padding-block: clamp(26px, 3.6vw, 58px); border-bottom: var(--border); }
+.location-story-image { aspect-ratio: 3 / 2; background: var(--stone); }
+.location-story-image img { width: 100%; height: 100%; object-fit: cover; }
+.location-story-copy h2 { margin-top: 8px; font-size: clamp(2.25rem, 4.25vw, 4.6rem); }
+.location-story-copy h2 span { display: block; }
+.location-district, .location-hours, .location-selected p { display: flex; align-items: center; gap: 8px; }
+.location-district, .location-selected p { color: var(--cobalt); }
+.location-story-description { max-width: 37ch; margin-block: 14px; color: var(--muted); }
+.location-hours { margin-bottom: 16px; font-weight: 800; }
+.location-hours svg { flex: none; color: var(--cobalt); }
+.location-selected p { margin-bottom: 8px; font-weight: 800; }
+
+.about-intro { display: grid; align-items: center; gap: 24px var(--grid-gap); padding-block: clamp(32px, 5vw, 76px); }
+.about-intro .eyebrow, .about-philosophy > .eyebrow, .about-preorder .eyebrow { color: var(--cobalt); }
+.about-intro h1 { max-width: 10ch; margin-block: 12px 16px; }
+.about-intro p:not(.eyebrow) { max-width: 37ch; }
+.about-atmosphere { aspect-ratio: 1.12; background: var(--stone); }
+.about-atmosphere img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 57%; }
+.about-philosophy, .about-preorder { display: grid; gap: 14px var(--grid-gap); padding-block: clamp(28px, 5.5vw, 84px); }
+.about-philosophy > div { padding-top: clamp(20px, 3vw, 38px); border-top: var(--border); }
+.about-philosophy p:not(.eyebrow), .about-barista p:not(.eyebrow) { max-width: 46ch; margin-top: 16px; }
+.about-barista-band { color: var(--cream); background: var(--ink); }
+.about-barista { display: grid; align-items: center; gap: 20px clamp(28px, 6vw, 104px); padding-block: clamp(36px, 5vw, 76px); }
+.about-barista h2, .about-preorder h2 { margin-top: 10px; }
+.about-barista p { color: var(--stone); }
+.about-barista img { width: 100%; height: auto; aspect-ratio: 1.15; object-fit: cover; object-position: 50% 57%; }
+.about-preorder p:not(.eyebrow) { max-width: 40ch; color: var(--muted); }
+.about-preorder-note { margin-block: 8px; font-size: 0.875rem; }
+.about-rewards { color: var(--white); background: var(--cobalt); }
+.about-rewards-inner { padding-block: clamp(30px, 4vw, 58px); }
+.about-rewards-heading { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.about-rewards-heading h2 { margin-top: 10px; }
+.about-bean { flex: none; width: clamp(44px, 8vw, 112px); }
+.about-rewards-rules { display: grid; gap: 12px var(--grid-gap); margin-block: 20px 16px; }
+.about-rewards-rules > div { padding-block: 8px; border-top: 1px solid rgb(255 255 255 / 55%); }
+.about-rewards-rules dt { font-size: clamp(1.55rem, 4vw, 3.25rem); font-weight: 800; letter-spacing: -0.055em; }
+.about-rewards-rules dd { max-width: 30ch; }
+.about-end { display: flex; justify-content: end; padding-block: clamp(30px, 4vw, 58px); }
+
+@media (min-width: 590px) {
+  .about-rewards-rules { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 780px) {
+  .locations-intro { grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr); align-items: end; }
+  .location-story { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .location-story:nth-of-type(2) { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.45fr); }
+  .location-story:nth-of-type(2) .location-story-image { grid-column: 2; grid-row: 1; aspect-ratio: 1.66; }
+  .location-story:nth-of-type(2) .location-story-copy { grid-column: 1; grid-row: 1; padding-inline-start: clamp(0px, 3vw, 64px); }
+  .location-story:nth-of-type(3) { grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr); }
+  .location-story:nth-of-type(3) .location-story-image { margin-inline-start: clamp(0px, 3vw, 64px); }
+  .about-intro { grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr); }
+  .about-philosophy { grid-template-columns: minmax(0, 0.37fr) minmax(0, 1fr); }
+  .about-barista { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr); }
+  .about-preorder { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: end; }
+}
